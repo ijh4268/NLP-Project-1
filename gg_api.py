@@ -42,6 +42,26 @@ def pre_ceremony():
     plain text file. It is the first thing the TA will run when grading.
     Do NOT change the name of this function or what it returns.'''
     # Your code here
+    with open("gg2013.json", "r") as file:
+        s = json.load(file)
+        for i in range(len(s)):
+            s[i].pop('id')
+            s[i].pop('user')
+        json_str = json.dumps(s)
+        out = open("pre_process_2013.json", "w")
+        out.write(json_str)
+        out.close()
+
+    with open("gg2015.json", "r") as file:
+        s = json.load(file)
+        for i in range(len(s)):
+            s[i].pop('id')
+            s[i].pop('user')
+        json_str = json.dumps(s)
+        out = open("pre_process_2015.json", "w")
+        out.write(json_str)
+        out.close()
+    
     print("Pre-ceremony processing complete.")
     return
 
