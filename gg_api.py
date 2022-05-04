@@ -1,4 +1,9 @@
 '''Version 0.35'''
+import nltk
+import json
+import re
+import numpy as np
+from collections import Counter
 
 OFFICIAL_AWARDS_1315 = ['cecil b. demille award', 'best motion picture - drama', 'best performance by an actress in a motion picture - drama', 'best performance by an actor in a motion picture - drama', 'best motion picture - comedy or musical', 'best performance by an actress in a motion picture - comedy or musical', 'best performance by an actor in a motion picture - comedy or musical', 'best animated feature film', 'best foreign language film', 'best performance by an actress in a supporting role in a motion picture', 'best performance by an actor in a supporting role in a motion picture', 'best director - motion picture', 'best screenplay - motion picture', 'best original score - motion picture', 'best original song - motion picture', 'best television series - drama', 'best performance by an actress in a television series - drama', 'best performance by an actor in a television series - drama', 'best television series - comedy or musical', 'best performance by an actress in a television series - comedy or musical', 'best performance by an actor in a television series - comedy or musical', 'best mini-series or motion picture made for television', 'best performance by an actress in a mini-series or motion picture made for television', 'best performance by an actor in a mini-series or motion picture made for television', 'best performance by an actress in a supporting role in a series, mini-series or motion picture made for television', 'best performance by an actor in a supporting role in a series, mini-series or motion picture made for television']
 OFFICIAL_AWARDS_1819 = ['best motion picture - drama', 'best motion picture - musical or comedy', 'best performance by an actress in a motion picture - drama', 'best performance by an actor in a motion picture - drama', 'best performance by an actress in a motion picture - musical or comedy', 'best performance by an actor in a motion picture - musical or comedy', 'best performance by an actress in a supporting role in any motion picture', 'best performance by an actor in a supporting role in any motion picture', 'best director - motion picture', 'best screenplay - motion picture', 'best motion picture - animated', 'best motion picture - foreign language', 'best original score - motion picture', 'best original song - motion picture', 'best television series - drama', 'best television series - musical or comedy', 'best television limited series or motion picture made for television', 'best performance by an actress in a limited series or a motion picture made for television', 'best performance by an actor in a limited series or a motion picture made for television', 'best performance by an actress in a television series - drama', 'best performance by an actor in a television series - drama', 'best performance by an actress in a television series - musical or comedy', 'best performance by an actor in a television series - musical or comedy', 'best performance by an actress in a supporting role in a series, limited series or motion picture made for television', 'best performance by an actor in a supporting role in a series, limited series or motion picture made for television', 'cecil b. demille award']
@@ -7,12 +12,63 @@ def get_hosts(year):
     '''Hosts is a list of one or more strings. Do NOT change the name
     of this function or what it returns.'''
     # Your code here
+    hosts = [""]
     return hosts
 
 def get_awards(year):
     '''Awards is a list of strings. Do NOT change the name
     of this function or what it returns.'''
-    # Your code here
+    awards = []
+    candidates = {"best": []}
+
+    stop_punctuation_include = ['.','!','?',',']
+    stop_punctuation_uninclude = ['@','#']
+    stop_punctuation = stop_punctuation_include + stop_punctuation_uninclude
+    with open("pre_process_2013.json", "r") as file:
+        content = json.load(file)
+        for tweet in content:
+            text = tweet['text']
+            # parse expressions in tweet, add possible award names to candidates
+            words = text.lower().split()
+            #re.split(r' |,|!|;|?|.', text.lower())
+            idx = words.index("best")
+            #candidates["won"].append(words[idx+1:len(words)])
+            stop_idx = len(words)-1 # index of the last word we include
+            found_idx = False
+            for i in range(idx+1, len(words)):
+                for mark in stop_punctuation:
+                    if mark in words[i]:
+                        if mark in stop_punctuation_include:
+                            stop_idx = i
+                            words[i] = words[i].replace(mark, "")
+                        else:
+                            stop_idx = i-1
+                        found_idx = True
+                        break
+                if found_idx:
+                    break
+
+            for i in range(idx+1, stop_idx+1):
+                candidates["best"].append(" ".join(words[idx+1: i+1]))
+            #candidates["best"].append(words[idx+1: stop_idx+1])
+
+    #print(candidates["best"][0:100])
+    occurence_count = Counter(candidates["best"])
+    most_frequent, temp = zip(*(occurence_count.most_common(100)))
+    #most_frequent = occurence_count.most_common(125)
+
+    eliminated = []
+    for i in range (len(most_frequent)):
+        for j in range(i+1, len(most_frequent)):
+            if most_frequent[i] in most_frequent[j]:
+                eliminated.append(i)
+            elif most_frequent[j] in most_frequent[i]:
+                eliminated.append(j)
+    awards = []
+    for i in range (len(most_frequent)):
+        if i not in eliminated:
+            awards.append(most_frequent[i])
+
     return awards
 
 def get_nominees(year):
@@ -20,6 +76,7 @@ def get_nominees(year):
     names as keys, and each entry a list of strings. Do NOT change
     the name of this function or what it returns.'''
     # Your code here
+    nominees = {key: [] for key in OFFICIAL_AWARDS_1315}
     return nominees
 
 def get_winner(year):
@@ -27,6 +84,7 @@ def get_winner(year):
     names as keys, and each entry containing a single string.
     Do NOT change the name of this function or what it returns.'''
     # Your code here
+    winners = {key: [] for key in OFFICIAL_AWARDS_1315}
     return winners
 
 def get_presenters(year):
@@ -34,6 +92,7 @@ def get_presenters(year):
     names as keys, and each entry a list of strings. Do NOT change the
     name of this function or what it returns.'''
     # Your code here
+    presenters = {key: [] for key in OFFICIAL_AWARDS_1315}
     return presenters
 
 def pre_ceremony():
