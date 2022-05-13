@@ -4,6 +4,8 @@ import json
 import re
 import numpy as np
 from collections import Counter
+import difflib
+import award_winners
 
 OFFICIAL_AWARDS_1315 = ['cecil b. demille award', 'best motion picture - drama', 'best performance by an actress in a motion picture - drama', 'best performance by an actor in a motion picture - drama', 'best motion picture - comedy or musical', 'best performance by an actress in a motion picture - comedy or musical', 'best performance by an actor in a motion picture - comedy or musical', 'best animated feature film', 'best foreign language film', 'best performance by an actress in a supporting role in a motion picture', 'best performance by an actor in a supporting role in a motion picture', 'best director - motion picture', 'best screenplay - motion picture', 'best original score - motion picture', 'best original song - motion picture', 'best television series - drama', 'best performance by an actress in a television series - drama', 'best performance by an actor in a television series - drama', 'best television series - comedy or musical', 'best performance by an actress in a television series - comedy or musical', 'best performance by an actor in a television series - comedy or musical', 'best mini-series or motion picture made for television', 'best performance by an actress in a mini-series or motion picture made for television', 'best performance by an actor in a mini-series or motion picture made for television', 'best performance by an actress in a supporting role in a series, mini-series or motion picture made for television', 'best performance by an actor in a supporting role in a series, mini-series or motion picture made for television']
 OFFICIAL_AWARDS_1819 = ['best motion picture - drama', 'best motion picture - musical or comedy', 'best performance by an actress in a motion picture - drama', 'best performance by an actor in a motion picture - drama', 'best performance by an actress in a motion picture - musical or comedy', 'best performance by an actor in a motion picture - musical or comedy', 'best performance by an actress in a supporting role in any motion picture', 'best performance by an actor in a supporting role in any motion picture', 'best director - motion picture', 'best screenplay - motion picture', 'best motion picture - animated', 'best motion picture - foreign language', 'best original score - motion picture', 'best original song - motion picture', 'best television series - drama', 'best television series - musical or comedy', 'best television limited series or motion picture made for television', 'best performance by an actress in a limited series or a motion picture made for television', 'best performance by an actor in a limited series or a motion picture made for television', 'best performance by an actress in a television series - drama', 'best performance by an actor in a television series - drama', 'best performance by an actress in a television series - musical or comedy', 'best performance by an actor in a television series - musical or comedy', 'best performance by an actress in a supporting role in a series, limited series or motion picture made for television', 'best performance by an actor in a supporting role in a series, limited series or motion picture made for television', 'cecil b. demille award']
@@ -64,11 +66,22 @@ def get_awards(year):
                 eliminated.append(i)
             elif most_frequent[j] in most_frequent[i]:
                 eliminated.append(j)
-    awards = []
+    temp_awards = []
     for i in range (len(most_frequent)):
         if i not in eliminated:
-            awards.append(most_frequent[i])
+            temp_awards.append(most_frequent[i])
 
+
+    eliminated = set()
+    for i in range(len(temp_awards)):
+        for j in range(i+1, len(temp_awards)):
+            diff = difflib.SequenceMatcher(None, temp_awards[i], temp_awards[j])
+            if diff.ratio() > 0.8: # similar
+                eliminated.add(j)
+    awards = []
+    for i in range(len(temp_awards)):
+        if i not in eliminated:
+            awards.append(temp_awards[i])
     return awards
 
 def get_nominees(year):
@@ -84,8 +97,8 @@ def get_winner(year):
     names as keys, and each entry containing a single string.
     Do NOT change the name of this function or what it returns.'''
     # Your code here
-    winners = {key: [] for key in OFFICIAL_AWARDS_1315}
-    return winners
+    #winners = {key: [] for key in OFFICIAL_AWARDS_1315}
+    return award_winners.award_winners()
 
 def get_presenters(year):
     '''Presenters is a dictionary with the hard coded award

@@ -4,6 +4,10 @@ import re
 import numpy as np
 from collections import Counter
 
+# sequence matcher similarity
+# https://stackoverflow.com/questions/4802137/how-to-use-sequencematcher-to-find-similarity-between-two-strings
+
+
 candidates = {"best": []}
 
 stop_punctuation_include = ['.','!','?',',']
