@@ -45,4 +45,4 @@ for i in range (len(most_frequent)):
     if i not in eliminated:
         awards.append(most_frequent[i])
 
-#print(awards)
+print(awards)
