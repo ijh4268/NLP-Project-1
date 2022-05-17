@@ -98,7 +98,7 @@ def get_winner(year):
     Do NOT change the name of this function or what it returns.'''
     # Your code here
     #winners = {key: [] for key in OFFICIAL_AWARDS_1315}
-    return award_winners.award_winners()
+    return award_winners.award_winners(year)
 
 def get_presenters(year):
     '''Presenters is a dictionary with the hard coded award

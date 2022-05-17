@@ -5,7 +5,7 @@ import numpy as np
 from collections import Counter
 import helper_functions
 
-def award_winners(): 
+def award_winners(year): 
     OFFICIAL_AWARDS_1315 = ['cecil b. demille award', 'best motion picture - drama', 'best performance by an actress in a motion picture - drama', 'best performance by an actor in a motion picture - drama', 'best motion picture - comedy or musical', 'best performance by an actress in a motion picture - comedy or musical', 'best performance by an actor in a motion picture - comedy or musical', 'best animated feature film', 'best foreign language film', 'best performance by an actress in a supporting role in a motion picture', 'best performance by an actor in a supporting role in a motion picture', 'best director - motion picture', 'best screenplay - motion picture', 'best original score - motion picture', 'best original song - motion picture', 'best television series - drama', 'best performance by an actress in a television series - drama', 'best performance by an actor in a television series - drama', 'best television series - comedy or musical', 'best performance by an actress in a television series - comedy or musical', 'best performance by an actor in a television series - comedy or musical', 'best mini-series or motion picture made for television', 'best performance by an actress in a mini-series or motion picture made for television', 'best performance by an actor in a mini-series or motion picture made for television', 'best performance by an actress in a supporting role in a series, mini-series or motion picture made for television', 'best performance by an actor in a supporting role in a series, mini-series or motion picture made for television']
     name_matching = {}
     name_matching['cecil b. demille award'] = ['demille award']
@@ -38,16 +38,19 @@ def award_winners():
     name_matching['best performance by an actor in a supporting role in a series, mini-series or motion picture made for television'] = ['best supporting actor']
 
     candidates = {"won": []}
+    candidatestemp = {"won":[]}
 
     stop_punctuation_include = ['.','!','?',',']
     stop_punctuation_uninclude = ['@','#']
     stop_punctuation = stop_punctuation_include + stop_punctuation_uninclude
+    #with open("pre_process_winners_" + str(year) + ".json", "r") as file:
     with open("pre_process_winners_2013.json", "r") as file:
         content = json.load(file)
         for tweet in content:
             text = tweet[0]['text']
             # parse expressions in tweet, add possible award names to candidates
             words = text.lower().split()
+            upperwords = text.split()
             #re.split(r' |,|!|;|?|.', text.lower())
             try:
                 idx = words.index("won")
@@ -55,16 +58,21 @@ def award_winners():
                 pass
             else:
                 for i in range(1, idx):
-                    candidates["won"].append((" ".join(words[0: i]), tweet[1]))
+                    candidates["won"].append((" ".join(words[0: i]), tweet[1], " ".join(upperwords[0: i])))
 
 
     # find the most common candidates
     #print(candidates["won"])
     #print(len(candidates["won"]))
-    occurence_count = Counter(candidates["won"])
-    most_frequent, temp = zip(*(occurence_count.most_common(100)))
+
+    freq_map = Counter(val[0] for val in candidates["won"])
+    print(freq_map)
+    most_frequent = sorted(candidates["won"], key = lambda ele: freq_map[ele[0]], reverse = True)
+    
+    #occurence_count = Counter(candidatestemp["won"])
+    #most_frequenttemp, temp = zip(*(occurence_count.most_common(100)))
     #most_frequent = occurence_count.most_common(100)
-    print(most_frequent)
+    #print(most_frequent[0:100])
 
     # substring elimination
     eliminated = []
@@ -75,10 +83,17 @@ def award_winners():
             elif most_frequent[j][0] in most_frequent[i][0]:
                 eliminated.append(j)
 
+    temp = []
+    for i in range (len(most_frequent)):
+        if i not in eliminated:
+            temp.append(most_frequent[i][2])
+
+    #print(temp)
+
     winners = {key: [] for key in OFFICIAL_AWARDS_1315}
     for i in range (len(most_frequent)):
         if i not in eliminated:
-            ne = helper_functions.extract_ne(most_frequent[i][0])
+            ne = helper_functions.extract_ne(most_frequent[i][2])
             #print(ne)
             ne_lst = list(ne)
             if len(ne_lst) > 0:
@@ -86,5 +101,5 @@ def award_winners():
             else:
                 winners[most_frequent[i][1]] = most_frequent[i][0]
 
-    print(winners)
+    #print(winners)
     return winners

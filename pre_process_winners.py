@@ -32,7 +32,7 @@ name_matching['best performance by an actress in a supporting role in a series, 
 name_matching['best performance by an actor in a supporting role in a series, mini-series or motion picture made for television'] = ['best supporting actor']
 
 new_arr = []
-with open("gg2013.json", "r") as file:
+with open("gg2015.json", "r") as file:
     s = json.load(file)
     for i in range(len(s)):
         s[i].pop('id')
@@ -47,6 +47,6 @@ with open("gg2013.json", "r") as file:
                     if colloquial in words:
                         new_arr.append((s[i], award))
     json_str = json.dumps(new_arr)
-    out = open("pre_process_winners_2013.json", "w")
+    out = open("pre_process_winners_2015.json", "w")
     out.write(json_str)
     out.close()
