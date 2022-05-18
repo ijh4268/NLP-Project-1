@@ -168,9 +168,9 @@ def main(year):
 
     for i in winners.keys():
         print("\nAward: " + i)
-        print("Presenters:" + ("".join(presenters[i])))
-        print("Nominees:" + ("".join(nominees[i])))
-        print("Winners:" + ("".join(winners[i])))
+        print("Presenters: " + ("".join(presenters[i])))
+        print("Nominees: " + ("".join(nominees[i])))
+        print("Winners: " + ("".join(winners[i])))
 
     print("\nBest Dressed: " + best_dress["Best Dressed"])
     print("Worst Dressed: " + best_dress["Worst Dressed"])
@@ -179,3 +179,4 @@ def main(year):
 
 if __name__ == '__main__':
     main(2013)
+    main(2015)
