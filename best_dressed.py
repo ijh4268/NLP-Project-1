@@ -35,7 +35,7 @@ def best_dressed(year):
         for j in range(len(unique)):
             namedentities["outfit"].append((unique[j], candidates["outfit"][i][0]))
 
-    print(namedentities["outfit"])
+    #print(namedentities["outfit"])
 
     cumulative_sentiment = {}
     analyzer = SentimentIntensityAnalyzer()
@@ -46,11 +46,11 @@ def best_dressed(year):
         else:
             cumulative_sentiment[ne[0]] += vs["compound"]
         
-    print(cumulative_sentiment)
+    #print(cumulative_sentiment)
 
     best_dressed = max(cumulative_sentiment, key=cumulative_sentiment.get)
     worst_dressed = min(cumulative_sentiment, key=cumulative_sentiment.get)
     result = {"Best Dressed": best_dressed, "Worst Dressed": worst_dressed}
-    print(result)
+    #print(result)
 
     return result

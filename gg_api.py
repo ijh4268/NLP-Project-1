@@ -144,8 +144,8 @@ def pre_ceremony(year):
         out.close()
     """
     
-    pre_process(year)
-    pre_process_winners(year)
+    pre_process.pre_process(year)
+    pre_process_winners.pre_process_winners(year)
 
     print("Pre-ceremony processing complete.")
     return
@@ -178,5 +178,7 @@ def main(year):
     return
 
 if __name__ == '__main__':
+    pre_ceremony(2013)
+    pre_ceremony(2015)
     main(2013)
     main(2015)
