@@ -12,6 +12,8 @@ Pleas run main() with the appropriate year to get the human-readable output, alo
 
 In gg_api.py, we run pre_ceremony() and main() for you with 2013 and 2015 as inputs.
 
+Github link: https://github.com/ijh4268/NLP-Project-1
+
 
 
 
