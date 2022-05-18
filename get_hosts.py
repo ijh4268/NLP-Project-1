@@ -8,7 +8,7 @@ nlp = spacy.load('en_core_web_sm')
 
 
 def load(year):
-    doc_bin = DocBin().from_disk(f"get_hosts/processed/{year}.spacy")
+    doc_bin = DocBin().from_disk(f"{year}.spacy")
     return list(doc_bin.get_docs(nlp.vocab))
 
 

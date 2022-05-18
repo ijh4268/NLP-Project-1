@@ -31,7 +31,7 @@ def clean(tweet):
 
 def save(docs, year):
     doc_bin = DocBin(docs=docs)
-    doc_bin.to_disk(f"get_hosts/processed/{year}.spacy")
+    doc_bin.to_disk(f"{year}.spacy")
 
 
 def preprocess(year):
@@ -54,6 +54,3 @@ def preprocess(year):
         save(docs, year)
         print(f"saved as {year}.spacy")
 
-
-if __name__ == '__main__':
-    preprocess(2015)
