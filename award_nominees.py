@@ -4,15 +4,17 @@ import re
 import numpy as np
 from collections import Counter, OrderedDict
 import helper_functions
-import imdb
+#import imdb
 
 def award_nominees(year): 
+    """
     cinema = imdb.CinemaGoer()
     all_movies = cinema.search_movie('')
     year_movies = []
     for movie in all_movies:
         if movie['year'] == year - 1:
             year_movies.append(movie)
+    """
 
     OFFICIAL_AWARDS_1315 = ['cecil b. demille award',
     'best motion picture - drama',

@@ -8,6 +8,7 @@ from collections import Counter
 # https://stackoverflow.com/questions/4802137/how-to-use-sequencematcher-to-find-similarity-between-two-strings
 
 
+awards = []
 candidates = {"best": []}
 
 stop_punctuation_include = ['.','!','?',',']
@@ -53,21 +54,22 @@ for i in range (len(most_frequent)):
             eliminated.append(i)
         elif most_frequent[j] in most_frequent[i]:
             eliminated.append(j)
-awards = []
+temp_awards = []
 for i in range (len(most_frequent)):
     if i not in eliminated:
-        awards.append(most_frequent[i])
+        temp_awards.append(most_frequent[i])
 
-print(awards)
-# now, to compare the candidates and find the most likely ones
-"""
-flattened = [word for candidate in candidates["best"] for word in candidate]
-print(flattened[:10])
-monster_str = ' '.join(flattened)
-print("monster str: ", monster_str[:100])
-text = nltk.Text(monster_str)
-collocations = text.collocations()
-print("\ncollocations: ", collocations[:100])
-"""
+
+eliminated = set()
+for i in range(len(temp_awards)):
+    for j in range(i+1, len(temp_awards)):
+        diff = difflib.SequenceMatcher(None, temp_awards[i], temp_awards[j])
+        if diff.ratio() > 0.8: # similar
+            eliminated.add(j)
+awards = []
+for i in range(len(temp_awards)):
+    if i not in eliminated:
+        awards.append(temp_awards[i])
+
 
 
