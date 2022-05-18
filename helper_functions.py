@@ -27,7 +27,7 @@ example_string = "Neil Armstrong went to the moon."
 
 s1 = word_tokenize(example_string)
 
-print(s1)
+#print(s1)
 
 def extract_ne(quote):
     words = word_tokenize(quote)
@@ -43,4 +43,4 @@ def extract_ne(quote):
 
 ne_set = extract_ne(example_string)
 
-print(ne_set)
+#print(ne_set)
