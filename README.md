@@ -4,6 +4,8 @@ Team Members: Andrew Huang, Chase Duvall, Patrick George, Isaac Henry
 
 Use pip3 install -r requirements.txt to install all required python packages.
 
+Use python3 -m spacy download en_core_web_sm to install the SpaCy module
+
 Please first run pre_ceremony() in gg_api.py for each year that is analyzed. For example, to test on 2013, run pre_ceremony(2013), with gg2013.json in the same directory as gg_api.py.
 
 Pleas run main() with the appropriate year to get the human-readable output, along with the results for best and worst dressed of the event. 
