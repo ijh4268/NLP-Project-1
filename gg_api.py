@@ -163,7 +163,8 @@ def main(year):
     presenters = get_presenters(year)
     best_dress = get_best_dressed(year)
 
-    print("Hosts: " + (" ".join(hosts)))
+    print("Year: "+ str(year) + "Golden Globes")
+    print("\nHosts: " + (" ".join(hosts)))
     print("\nAwards: " + (" ".join(awards)))
 
     for i in winners.keys():
