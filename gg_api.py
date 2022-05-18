@@ -2,6 +2,7 @@
 import nltk
 import json
 import re
+import spacy
 import numpy as np
 from collections import Counter
 import difflib
@@ -11,7 +12,7 @@ import award_nominees
 import award_presenters
 import pre_process
 import best_dressed
-import get_hosts
+import get_hosts as gh
 import preprocess_hosts
 
 OFFICIAL_AWARDS_1315 = ['cecil b. demille award', 'best motion picture - drama', 'best performance by an actress in a motion picture - drama', 'best performance by an actor in a motion picture - drama', 'best motion picture - comedy or musical', 'best performance by an actress in a motion picture - comedy or musical', 'best performance by an actor in a motion picture - comedy or musical', 'best animated feature film', 'best foreign language film', 'best performance by an actress in a supporting role in a motion picture', 'best performance by an actor in a supporting role in a motion picture', 'best director - motion picture', 'best screenplay - motion picture', 'best original score - motion picture', 'best original song - motion picture', 'best television series - drama', 'best performance by an actress in a television series - drama', 'best performance by an actor in a television series - drama', 'best television series - comedy or musical', 'best performance by an actress in a television series - comedy or musical', 'best performance by an actor in a television series - comedy or musical', 'best mini-series or motion picture made for television', 'best performance by an actress in a mini-series or motion picture made for television', 'best performance by an actor in a mini-series or motion picture made for television', 'best performance by an actress in a supporting role in a series, mini-series or motion picture made for television', 'best performance by an actor in a supporting role in a series, mini-series or motion picture made for television']
@@ -21,7 +22,7 @@ def get_hosts(year):
     '''Hosts is a list of one or more strings. Do NOT change the name
     of this function or what it returns.'''
     # Your code here
-    hosts = get_hosts.get_hosts(year)
+    hosts = gh.get_hosts(year)
     return hosts
 
 def get_awards(year):
@@ -145,7 +146,7 @@ def pre_ceremony(year):
         out.write(json_str)
         out.close()
     """
-    
+    spacy.download('en_web_core_sm')
     pre_process.pre_process(year)
     pre_process_winners.pre_process_winners(year)
     preprocess_hosts.preprocess(year)
