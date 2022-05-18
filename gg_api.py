@@ -146,7 +146,6 @@ def pre_ceremony(year):
         out.write(json_str)
         out.close()
     """
-    spacy.download('en_web_core_sm')
     pre_process.pre_process(year)
     pre_process_winners.pre_process_winners(year)
     preprocess_hosts.preprocess(year)
