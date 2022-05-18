@@ -100,5 +100,5 @@ def award_presenters(year):
         #if len(presenters[res[i][1]]) < 2:
         presenters[res[i][1]].append(res[i][0])
 
-    print(presenters)
+    #print(presenters)
     return presenters

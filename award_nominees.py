@@ -115,5 +115,5 @@ def award_nominees(year):
         if len(nominees[res[i][1]]) < 5:
             nominees[res[i][1]].append(res[i][0])
 
-    print(nominees)
+    #print(nominees)
     return nominees

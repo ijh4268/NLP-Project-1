@@ -54,5 +54,3 @@ def best_dressed(year):
     print(result)
 
     return result
-
-best_dressed(2013)
