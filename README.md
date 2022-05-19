@@ -10,6 +10,7 @@ We've included a zip file of the .spacy files containing the preprocessed data f
 
 If you want to use the .spacy files, unzip the folder and place the two files in the same directory as the rest of the code.
 
+
 Please first run pre_ceremony() in gg_api.py for each year that is analyzed. For example, to test on 2013, run pre_ceremony(2013), with gg2013.json in the same directory as gg_api.py.
 
 Please run main() with the appropriate year to get the human-readable output, along with the results for best and worst dressed of the event.
