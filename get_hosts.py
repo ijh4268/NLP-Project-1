@@ -25,7 +25,7 @@ def get_hosts(year):
 def find_hosts(tweets):
     # get tweets that only mention the word host
     only_host = [
-        tweet for tweet in tweets for token in tweet if token.text == 'host']
+        tweet for tweet in tweets for token in tweet if token.text.startswith('host')]
     # get all the PERSON entities that appear in those tweets
     people = [ent for doc in only_host for ent in doc.ents if ent.label_ == 'PERSON']
     # get frequency distribution
@@ -33,7 +33,12 @@ def find_hosts(tweets):
         person.text.lower() for person in people)
     # find most similar words in list of most common people
     similarities = [get_close_matches(
-        word, most_common_people, cutoff=0.6) for word in most_common_people]
+        word, most_common_people, cutoff=0.8) for word in most_common_people]
+    # find the longest lists of similarities
+    names_longest_similarities = [lst[0] for lst in similarities if len(
+        lst) == len(max(similarities, key=len))]
+    similarities = [get_close_matches(
+        word, most_common_people, n=3, cutoff=0.8) for word in most_common_people]
     # find the longest lists of similarities
     names_longest_similarities = [lst[0] for lst in similarities if len(
         lst) == len(max(similarities, key=len))]
@@ -47,9 +52,9 @@ def find_hosts(tweets):
     first_names = [words[0] for words in to_words if len(words) == 2]
     # get most common occurences
     most_common_first_names = nltk.FreqDist(name for name in first_names)
-    top_5 = [name[0] for name in most_common_first_names.most_common(5)]
+    top_10 = [name[0] for name in most_common_first_names.most_common(10)]
     occurences = {name: [occurence for occurence in to_words for word in occurence if name in occurence or word.startswith(
-        name)] for name in top_5}
+        name)] for name in top_10}
     # rank most common occurences
     ranked = sorted(occurences, key=lambda i: len(occurences[i]), reverse=True)
     host1, host2 = tuple(ranked[:2])
@@ -68,4 +73,3 @@ def find_hosts(tweets):
     print("done")
     # put together first names and last names and return
     return [" ".join([key, value]) for key, value in most_common_last_names.items()]
-

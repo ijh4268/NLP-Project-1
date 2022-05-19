@@ -119,7 +119,7 @@ def get_presenters(year):
 def get_best_dressed(year):
     return best_dressed.best_dressed(year)
 
-def pre_ceremony(year):
+def pre_ceremony(year, spacy=False):
     '''This function loads/fetches/processes any data your program
     will use, and stores that data in your DB or in a json, csv, or
     plain text file. It is the first thing the TA will run when grading.
@@ -148,7 +148,8 @@ def pre_ceremony(year):
     """
     pre_process.pre_process(year)
     pre_process_winners.pre_process_winners(year)
-    preprocess_hosts.preprocess(year)
+    if spacy:
+        preprocess_hosts.preprocess(year)
 
     print("Pre-ceremony processing complete.")
     return
